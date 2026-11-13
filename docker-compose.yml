@@ -1,0 +1,21 @@
+# Local development database only. Do not use these passwords in production.
+services:
+  db:
+    image: postgres:16
+    container_name: binsathi-db
+    environment:
+      POSTGRES_DB: binsathi
+      POSTGRES_USER: binsathi
+      POSTGRES_PASSWORD: binsathi
+    ports:
+      - "5432:5432"
+    volumes:
+      - binsathi_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U binsathi -d binsathi"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  binsathi_pgdata:
