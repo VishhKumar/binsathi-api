@@ -36,4 +36,5 @@ public interface PickupRepository extends JpaRepository<Pickup, UUID> {
             + "where ca.organisationId = :orgId and ca.collectorId = :collectorId)))")
     List<Pickup> findRoute(@Param("orgId") UUID orgId, @Param("collectorId") UUID collectorId,
                            @Param("date") LocalDate date);
+    long countByOrganisationIdAndScheduledDateBetweenAndStatus(UUID organisationId, LocalDate from, LocalDate to, String status);
 }
