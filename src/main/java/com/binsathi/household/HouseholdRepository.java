@@ -22,4 +22,5 @@ public interface HouseholdRepository extends JpaRepository<Household, UUID> {
     @Query("select h.id from Household h where h.organisationId = :orgId and h.status = 'ACTIVE' "
             + "and h.buildingId in (select b.id from Building b where b.organisationId = :orgId and b.areaId = :areaId)")
     List<UUID> findActiveIdsByArea(@Param("orgId") UUID orgId, @Param("areaId") UUID areaId);
+    List<Household> findByOrganisationIdAndResidentUserIdAndStatus(UUID organisationId, UUID residentUserId, String status);
 }

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import com.binsathi.household.HouseholdDtos.ResidentAssignment;
 
 import java.util.UUID;
 
@@ -43,6 +44,12 @@ public class HouseholdController {
     public HouseholdResponse update(@AuthenticationPrincipal AuthUser me, @PathVariable UUID id,
                                     @Valid @RequestBody HouseholdRequest request) {
         return service.update(me.organisationId(), id, request);
+    }
+
+    @PutMapping("/{id}/resident")
+    public HouseholdResponse assignResident(@AuthenticationPrincipal AuthUser me, @PathVariable UUID id,
+                                            @RequestBody ResidentAssignment body) {
+        return service.assignResident(me.organisationId(), id, body.residentUserId());
     }
 
     @DeleteMapping("/{id}")

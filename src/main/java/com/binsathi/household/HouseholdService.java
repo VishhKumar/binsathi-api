@@ -5,6 +5,8 @@ import com.binsathi.common.ApiException;
 import com.binsathi.common.PageResponse;
 import com.binsathi.household.HouseholdDtos.HouseholdRequest;
 import com.binsathi.household.HouseholdDtos.HouseholdResponse;
+import com.binsathi.user.AppUserRepository;
+import com.binsathi.user.Role;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +18,12 @@ public class HouseholdService {
 
     private final HouseholdRepository households;
     private final BuildingRepository buildings;
+    private final AppUserRepository users;
 
-    public HouseholdService(HouseholdRepository households, BuildingRepository buildings) {
+    public HouseholdService(HouseholdRepository households, BuildingRepository buildings, AppUserRepository users) {
         this.households = households;
         this.buildings = buildings;
+        this.users = users;
     }
 
     /** Lists active households by default; pass status INACTIVE to see removed ones. */
@@ -52,6 +56,19 @@ public class HouseholdService {
     @Transactional
     public void delete(UUID organisationId, UUID id) {
         find(organisationId, id).deactivate();
+    }
+
+    /** Links an active resident of the same organisation to the household (null removes the link). */
+    @Transactional
+    public HouseholdResponse assignResident(UUID organisationId, UUID id, UUID residentUserId) {
+        Household h = find(organisationId, id);
+        if (residentUserId != null) {
+            users.findByIdAndOrganisationId(residentUserId, organisationId)
+                    .filter(u -> u.getRole() == Role.RESIDENT && "ACTIVE".equals(u.getStatus()))
+                    .orElseThrow(() -> new ApiException(404, "RESIDENT_NOT_FOUND", "Resident not found"));
+        }
+        h.assignResident(residentUserId);
+        return HouseholdResponse.from(h);
     }
 
     /** Every lookup includes the organisation id, so one organisation can never reach another's data. */

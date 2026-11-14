@@ -14,11 +14,14 @@ public final class HouseholdDtos {
             @NotNull @DecimalMin("0.00") @Digits(integer = 8, fraction = 2) BigDecimal monthlyFee,
             @Pattern(regexp = "ACTIVE|INACTIVE") String status) {}
 
+    /** residentUserId may be null, which removes the link. */
+    public record ResidentAssignment(UUID residentUserId) {}
+
     public record HouseholdResponse(UUID id, UUID buildingId, String unitNumber,
-                                    BigDecimal monthlyFee, String status) {
+                                    BigDecimal monthlyFee, String status, UUID residentUserId) {
         public static HouseholdResponse from(Household h) {
             return new HouseholdResponse(h.getId(), h.getBuildingId(), h.getUnitNumber(),
-                    h.getMonthlyFee(), h.getStatus());
+                    h.getMonthlyFee(), h.getStatus(), h.getResidentUserId());
         }
     }
 }

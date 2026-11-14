@@ -72,6 +72,12 @@ public class Pickup {
 
     @PreUpdate
     void onUpdate() { updatedAt = Instant.now(); }
+    public static Pickup onDemand(UUID organisationId, UUID householdId, String wasteType,
+                                  LocalDate scheduledDate, LocalTime windowStart, LocalTime windowEnd) {
+        Pickup p = new Pickup(organisationId, householdId, null, wasteType, scheduledDate, windowStart, windowEnd);
+        p.onDemand = true;
+        return p;
+    }
 
     public void markCompleted() { this.status = "COMPLETED"; this.completedAt = Instant.now(); }
     public void markSkipped(String reason) { this.status = "SKIPPED"; this.skipReason = reason; }

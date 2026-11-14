@@ -29,6 +29,9 @@ public class Household {
     @Column(nullable = false)
     private String status = "ACTIVE";
 
+    @Column(name = "resident_user_id")
+    private UUID residentUserId;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -60,6 +63,9 @@ public class Household {
     public void deactivate() { this.status = "INACTIVE"; }
 
     public UUID getId() { return id; }
+    public void assignResident(UUID residentUserId) { this.residentUserId = residentUserId; }
+
+    public UUID getResidentUserId() { return residentUserId; }
     public UUID getOrganisationId() { return organisationId; }
     public UUID getBuildingId() { return buildingId; }
     public String getUnitNumber() { return unitNumber; }
