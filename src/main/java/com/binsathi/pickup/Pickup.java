@@ -45,6 +45,9 @@ public class Pickup {
     @Column(name = "skip_reason")
     private String skipReason;
 
+    @Column(name = "collector_id")
+    private UUID collectorId;
+
     @Column(name = "is_on_demand", nullable = false)
     private boolean onDemand;
 
@@ -82,6 +85,19 @@ public class Pickup {
     public void markCompleted() { this.status = "COMPLETED"; this.completedAt = Instant.now(); }
     public void markSkipped(String reason) { this.status = "SKIPPED"; this.skipReason = reason; }
     public void markCancelled() { this.status = "CANCELLED"; }
+    public void completeBy(UUID collectorId) {
+        this.status = "COMPLETED";
+        this.completedAt = Instant.now();
+        this.collectorId = collectorId;
+    }
+
+    public void skipBy(UUID collectorId, String reason) {
+        this.status = "SKIPPED";
+        this.skipReason = reason;
+        this.collectorId = collectorId;
+    }
+
+    public UUID getCollectorId() { return collectorId; }
 
     public UUID getId() { return id; }
     public UUID getOrganisationId() { return organisationId; }
