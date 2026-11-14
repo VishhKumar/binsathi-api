@@ -60,6 +60,16 @@ public class AppUser {
     @PreUpdate
     void onUpdate() { updatedAt = Instant.now(); }
 
+    public void updateProfile(String name, String phone) {
+        this.name = name;
+        this.phone = phone;
+    }
+
+    public void setStatus(String status) { this.status = status; }
+
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+
+
     public UUID getId() { return id; }
     public UUID getOrganisationId() { return organisationId; }
     public String getName() { return name; }
