@@ -29,3 +29,10 @@ app:
     secret: ${JWT_SECRET:dev-only-secret-please-change-0123456789abcdef}
     access-minutes: 15
     refresh-days: 30
+  bootstrap:
+    admin-email: ${BOOTSTRAP_ADMIN_EMAIL:}
+    admin-password: ${BOOTSTRAP_ADMIN_PASSWORD:}
+  login:
+    max-failures: 5
+    window-minutes: 10
+

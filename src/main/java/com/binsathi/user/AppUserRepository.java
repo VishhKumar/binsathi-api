@@ -17,4 +17,5 @@ public interface AppUserRepository extends JpaRepository<AppUser, UUID> {
 
     Page<AppUser> findByOrganisationIdAndRoleIn(UUID organisationId, Collection<Role> roles, Pageable pageable);
     long countByOrganisationIdAndRoleAndStatus(UUID organisationId, Role role, String status);
+    boolean existsByRole(Role role);
 }

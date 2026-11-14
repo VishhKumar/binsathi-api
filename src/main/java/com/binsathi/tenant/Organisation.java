@@ -49,6 +49,14 @@ public class Organisation {
     void onUpdate() { updatedAt = Instant.now(); }
 
     public UUID getId() { return id; }
+    public void update(String name, String type, String contactEmail, String status) {
+        this.name = name;
+        this.type = type;
+        this.contactEmail = contactEmail;
+        this.status = status;
+    }
+
+    public Instant getCreatedAt() { return createdAt; }
     public String getName() { return name; }
     public String getType() { return type; }
     public String getContactEmail() { return contactEmail; }
